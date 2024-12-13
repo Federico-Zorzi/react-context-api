@@ -5,7 +5,7 @@ import DefaultLayout from "./layouts/DefaultLayout";
 
 import HomePage from "./pages/HomePage";
 import AboutUsPage from "./pages/AboutUsPage";
-import PostListIndexPage from "./pages/postList/PostListIndexPage";
+import PostListPage from "./pages/postList/PostListPage";
 import PostListShowPage from "./pages/postList/PostListShowPage";
 import PostListPostPage from "./pages/postList/PostListPostPage";
 import NotFound from "./pages/notFound";
@@ -19,8 +19,9 @@ function App() {
             <Route index Component={HomePage} />
             <Route path="/aboutUs" Component={AboutUsPage} />
             <Route path="/notFound" Component={NotFound}></Route>
+
             <Route path="/postList">
-              <Route index Component={PostListIndexPage} />
+              <Route index Component={PostListPage} />
               <Route path=":id" Component={PostListShowPage} />
               <Route path="addPost" Component={PostListPostPage} />
             </Route>

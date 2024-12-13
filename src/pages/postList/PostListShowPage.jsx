@@ -30,8 +30,6 @@ export default function PostListShowPage() {
 
   useEffect(fetchShowPost, []);
 
-  console.log(postSelected.tags);
-
   return (
     <main>
       <div className="container">
