@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { usePostListContext } from "../../context/PostContext";
+
+import PostCard from "../../components/PostCard";
+
 export default function PostListPostPage(updatePosts) {
   const backendPath = import.meta.env.VITE_BACKEND_URL;
   const backendPostListPath =
@@ -15,6 +19,8 @@ export default function PostListPostPage(updatePosts) {
     isPublished: false,
     tags: [],
   };
+
+  const { postList, addPost } = usePostListContext();
 
   const [newPostListUpdated, setNewPostListUpdated] = useState(defaultPost);
 
@@ -49,33 +55,6 @@ export default function PostListPostPage(updatePosts) {
   };
   useEffect(fetchPostCategories, []);
 
-  /* fetch for add new post*/
-  const fetchPostNewEl = (e) => {
-    e.preventDefault();
-
-    fetch(backendPostListPath, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        title: formData.title,
-        author: formData.author,
-        content: formData.content,
-        image:
-          "/images/" + (formData.image ? formData.image : "img-default.svg"),
-        category: formData.category,
-        isPublished: formData.isPublished,
-        tags: formData.tags,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        const { posts } = data;
-        setNewPostListUpdated(posts);
-      });
-
-    /* setformData(defaultPost); */
-  };
-
   const handleSubmit = () =>
     goToPage("/postList", { state: { newPostListUpdated } });
 
@@ -96,8 +75,8 @@ export default function PostListPostPage(updatePosts) {
           </button>
         </div>
 
-        <div>
-          <form onSubmit={fetchPostNewEl}>
+        <section>
+          <form onSubmit={(e) => addPost(e, formData)}>
             <div className="row g-2">
               {/* title input */}
               <div className="col-6">
@@ -276,7 +255,20 @@ export default function PostListPostPage(updatePosts) {
               </div>
             </div>
           </form>
-        </div>
+        </section>
+
+        <section>
+          {/* card visualization post */}
+          <PostCard
+            title={formData.title}
+            author={formData.author}
+            content={formData.content}
+            tags={formData.tags}
+            category={formData.category}
+            image="/img-default.svg"
+            isPublished={formData.isPublished}
+          ></PostCard>
+        </section>
       </div>
     </main>
   );
