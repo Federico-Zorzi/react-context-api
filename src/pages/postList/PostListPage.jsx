@@ -10,16 +10,6 @@ export default function PostListPage() {
 
   const goToPage = useNavigate();
 
-  // fetch for delete a post
-  const fetchDeletePost = (id) => {
-    fetch(`${backendPostListPath}/${id}`, { method: "DELETE" })
-      .then((res) => res.json())
-      .then((data) => {
-        const { posts } = data;
-        setPostList(posts);
-      });
-  };
-
   return (
     <main>
       <div className="container pt-3">

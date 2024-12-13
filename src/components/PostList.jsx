@@ -1,28 +1,18 @@
-import { useEffect, useState } from "react";
+/* import { useEffect, useState } from "react"; */
 import { data, useLocation, useNavigate } from "react-router";
 
-export default function PostList() {
+import { usePostListContext } from "../context/PostContext";
+
+export default function postList() {
   const backendPath = import.meta.env.VITE_BACKEND_URL;
-  const backendPostListPath =
+  const backendpostListPath =
     backendPath + import.meta.env.VITE_BACKEND_URL_POST;
+
+  const { postList, deletePost } = usePostListContext();
 
   const goToPage = useNavigate();
 
-  const [postList, setPostList] = useState(null);
-
-  // fetch post list from backend
-  const fetchPostList = () => {
-    fetch(backendPostListPath)
-      .then((res) => res.json())
-      .then((data) => {
-        const { newPostList } = data;
-
-        setPostList(newPostList);
-      });
-  };
-  useEffect(fetchPostList, []);
-
-  return postList ? (
+  return postList && postList.length > 0 ? (
     <table className="table table-striped table-hover">
       <thead>
         <tr>
@@ -121,7 +111,7 @@ export default function PostList() {
                       </button>
                       <button
                         type="button"
-                        onClick={() => fetchDeletePost(post.id)}
+                        onClick={() => deletePost(post.id)}
                         className="btn btn-danger"
                         data-bs-dismiss="modal"
                       >
